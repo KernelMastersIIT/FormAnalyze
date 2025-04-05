@@ -25,12 +25,13 @@ def identify_issues(data, event_id):
         "poor crowd control", "mismanagement", "slow service"
     ]
     
-    # Classify each text in the list
-    results = [classifier(text, candidate_labels) for text in texts]
+    # Classify all texts in one batch to optimize performance
+    results = classifier(texts, candidate_labels)
     
     # Collect the labels with high confidence (score > 0.7)
     problems = []
     for res in results:
+        # Here we're using the result structure returned from the batch classification
         if res['scores'][0] > 0.7:  # High confidence labels
             problems.append(res['labels'][0])
     

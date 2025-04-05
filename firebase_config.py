@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 
 # Load credentials and initialize Firebase
-cred = credentials.Certificate("credentials.json")  # Ensure this file exists
+cred = credentials.Certificate("kernel.json")  # Ensure this file exists
 firebase_admin.initialize_app(cred, {
     'databaseURL': "https://kernelforms-default-rtdb.asia-southeast1.firebasedatabase.app/"
 })
