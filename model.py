@@ -1,5 +1,6 @@
-from transformers import pipeline 
+from transformers import pipeline
 
+# Load the classifier once, outside of the function
 classifier = pipeline("zero-shot-classification", model="typeform/distilbert-base-uncased-mnli")
 
 def transform_firebase_data(data, event_id):
@@ -24,7 +25,13 @@ def identify_issues(data, event_id):
         "poor crowd control", "mismanagement", "slow service"
     ]
     
+    # Classify each text in the list
     results = [classifier(text, candidate_labels) for text in texts]
-    problems = [res['labels'][0] for res in results if res['scores'][0] > 0.7]  # High confidence labels
+    
+    # Collect the labels with high confidence (score > 0.7)
+    problems = []
+    for res in results:
+        if res['scores'][0] > 0.7:  # High confidence labels
+            problems.append(res['labels'][0])
     
     return list(set(problems))  # Remove duplicates
